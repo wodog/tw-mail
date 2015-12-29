@@ -39,9 +39,9 @@ module.exports = {
 var tw-mail = require('tw-mail');
 
 var options = {
-  email: 'xxx@qq.com',  // the email address where you want to send
-  token: 'xxxxxx',    // the token string what you want to send
-  username: 'xxx'   // the username who you want to send
+  email: '536505032@qq.com',  // the email address where you want to send
+  token: '123456',    // the token string what you want to send
+  username: 'wodog99'   // the username who you want to send
 }
 
 // send resetpass mail
