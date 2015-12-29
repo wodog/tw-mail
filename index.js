@@ -23,8 +23,11 @@ const SITE_ROOT_URL = 'http://' + config.host;
  */
 exports.sendValidateMail = function(options, callback) {
 
-  if (!options) {
-    callback(new Error('options can\'t be null'));
+  try {
+    _validateConfig(config);
+    _validateParams(options);
+  } catch (err) {
+    callback(err);
   }
 
   let from = util.format('%s <%s>', config.name, config.mail_opts.auth.user);
@@ -62,8 +65,11 @@ exports.sendValidateMail = function(options, callback) {
  */
 exports.sendActiveMail = function(options, callback) {
 
-  if (!options) {
-    callback(new Error('options can\'t be null'));
+  try {
+    _validateConfig(config);
+    _validateParams(options);
+  } catch (err) {
+    callback(err);
   }
 
   let from = util.format('%s <%s>', config.name, config.mail_opts.auth.user);
@@ -101,8 +107,11 @@ exports.sendActiveMail = function(options, callback) {
  */
 exports.sendResetPassMail = function(options, callback) {
 
-  if (!options) {
-    callback(new Error('options can\'t be null'));
+  try {
+    _validateConfig(config);
+    _validateParams(options);
+  } catch (err) {
+    callback(err);
   }
 
   let from = util.format('%s <%s>', config.name, config.mail_opts.auth.user);
@@ -131,3 +140,45 @@ exports.sendResetPassMail = function(options, callback) {
   });
 
 };
+
+function _validateConfig(config) {
+  if (!config.host) {
+    let err = new Error('property host is required');
+    debug(err);
+    throw err;
+  }
+
+  if (!config.name) {
+    let err = new Error('property name is required');
+    debug(err);
+    throw err;
+  }
+
+  if (!config.mail_opts) {
+    let err = new Error('property mail_opts is required');
+    debug(err);
+    throw err;
+  }
+
+}
+
+function _validateParams(options) {
+  if (!options.email) {
+    let err = new Error('property email is required');
+    debug(err);
+    throw err;
+  }
+
+  if (!options.token) {
+    let err = new Error('property token is required');
+    debug(err);
+    throw err;
+  }
+
+  if (!options.username) {
+    let err = new Error('property username is required');
+    debug(err);
+    throw err;
+  }
+
+}
