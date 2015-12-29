@@ -58,5 +58,16 @@ tw_mail.sendActiveMail(options, callback);
 
 ```bash
 sudo npm install -g mocha
-mocha ./node_modules/tw-mail/test
+mocha -t 5000 ./node_modules/tw-mail/test
 ```
+
+### screenshots
+
+- active
+  ![active](https://raw.githubsercontent.com/wodog/tw-mail/master/screenshots/active)
+
+- validate
+  ![validate](https://raw.githubsercontent.com/wodog/tw-mail/master/screenshots/validate)
+
+- passreset
+  ![passreset](https://raw.githubsercontent.com/wodog/tw-mail/master/screenshots/passreset)
