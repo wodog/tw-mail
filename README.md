@@ -64,10 +64,10 @@ mocha -t 5000 ./node_modules/tw-mail/test
 ### screenshots
 
 - active
-  ![active](https://raw.githubsercontent.com/wodog/tw-mail/master/screenshots/active.png)
+  ![active](https://raw.githubusercontent.com/wodog/tw-mail/master/screenshots/active.png)
 
 - validate
-  ![validate](https://raw.githubsercontent.com/wodog/tw-mail/master/screenshots/validate.png)
+  ![validate](https://raw.githubusercontent.com/wodog/tw-mail/master/screenshots/validate.png)
 
 - passreset
-  ![passreset](https://raw.githubsercontent.com/wodog/tw-mail/master/screenshots/passreset.png)
+  ![passreset](https://raw.githubusercontent.com/wodog/tw-mail/master/screenshots/passreset.png)
