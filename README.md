@@ -1,15 +1,17 @@
 # tw-mail
 
+[![Build Status](https://travis-ci.org/wodog/tw-mail.svg?branch=master)](https://travis-ci.org/wodog/tw-mail)
+[![Version npm](https://img.shields.io/npm/v/tw-mail.svg)](https://www.npmjs.com/package/tw-mail)
+
   trend wood mail module.
 
-### install
+## install
 
 ```bash
 npm install tw-mail
 ```
 
-### set up
-
+## set up
   first, you should create `config.js`.
 
   and then, add some config in it, just like below:
@@ -33,7 +35,7 @@ module.exports = {
 };
 ```
 
-### usage
+## usage
 
 ```js
 var config = require('config');
@@ -55,7 +57,7 @@ tw_mail.sendValidateMail(options, callback);
 tw_mail.sendActiveMail(options, callback);
 ```
 
-### response
+## response
 
 ```js
 {
@@ -67,15 +69,14 @@ tw_mail.sendActiveMail(options, callback);
 }
 ```
 
-### test
+## test
 
 ```sh
 npm install
 npm test
 ```
 
-### screenshots
-
+## screenshots
 - active
 
   ![active](https://raw.githubusercontent.com/wodog/tw-mail/master/screenshots/active.png)

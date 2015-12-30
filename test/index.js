@@ -13,7 +13,6 @@ describe('test/index.js', function() {
 
   describe('sendActiveMail', function() {
     it('should ok', function(done) {
-      console.log(tw_mail.sendActiveMail);
       tw_mail.sendActiveMail(options, function(err, data) {
         assert.ok(data);
         assert.equal(data.response, '250 Ok: queued as ');
