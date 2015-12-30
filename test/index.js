@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 const config = require('../config');
-const tw_mail = require('../')(config);
+const tw_mail = require('../')(config.mail_opts);
 
 describe('test/index.js', function() {
 
@@ -10,6 +10,7 @@ describe('test/index.js', function() {
   options.email = '536505032@qq.com';
   options.token = '123456';
   options.username = 'wodog99';
+  options.webname = '小窝',
 
   describe('sendActiveMail', function() {
     it('should ok', function(done) {

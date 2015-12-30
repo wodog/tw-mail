@@ -1,7 +1,4 @@
 module.exports = {
-  name: '小窝狗测试',
-  host: 'localhost',
-
   /**
    * mail options
    */

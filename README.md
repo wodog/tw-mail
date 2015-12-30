@@ -1,7 +1,5 @@
 # tw-mail
-
-[![Build Status](https://travis-ci.org/wodog/tw-mail.svg?branch=master)](https://travis-ci.org/wodog/tw-mail)
-[![Version npm](https://img.shields.io/npm/v/tw-mail.svg)](https://www.npmjs.com/package/tw-mail)
+[![Build Status](https://travis-ci.org/wodog/tw-mail.svg?branch=master)](https://travis-ci.org/wodog/tw-mail) [![Version npm](https://img.shields.io/npm/v/tw-mail.svg)](https://www.npmjs.com/package/tw-mail)
 
   trend wood mail module.
 
@@ -18,18 +16,15 @@ npm install tw-mail
 
 ```js
 module.exports = {
-  name: '小窝狗测试',  //required
-  host: 'localhost',  //required
-
   /**
    * mail options
    */
-  mail_opts: {  //required
-    host: 'smtp.qq.com',
-    port: '587',
+  mail_opts: {
+    host: 'smtp.163.com',
+    port: 25,
     auth: {
-      user: 'your username',
-      pass: 'your password'
+      user: 'qqq536505032@163.com',
+      pass: 'qjkujfvdzbyhphzg'
     }
   }
 };
@@ -39,21 +34,23 @@ module.exports = {
 
 ```js
 var config = require('config');
-var tw-mail = require('tw-mail')(config);
+var tw-mail = require('tw-mail')(config.mail_opts);
 
 var options = {
-  email: '536505032@qq.com',  // the email address where you want to send
-  token: '123456',    // the token string what you want to send
-  username: 'wodog99'   // the username who you want to send
+  email: '536505032@qq.com',  // 发送邮箱地址
+  token: '123456',    // token
+  username: 'wodog99',   // 用户名
+  webname: '测试网站',    // 网站名
+  url: 'http://test.com'   // 链接地址
 }
 
-// send resetpass mail
+// 发送密码重置邮件
 tw_mail.sendResetPassMail(options, callback);
 
-// send validate mail
+// 发送验证发邮件
 tw_mail.sendValidateMail(options, callback);
 
-// send active mail
+// 发送激活邮件
 tw_mail.sendActiveMail(options, callback);
 ```
 

@@ -11,25 +11,14 @@ const nodemailer = require('nodemailer');
 const util = require('util');
 const debug = require('debug')('tw-mail');
 
-let config;
-let transport;
-let SITE_ROOT_URL;
-
 /**
  * 构造函数
  * @param {Object} config 必须的配置对象
  */
-let mail = module.exports = function (options){
-  try{
-    _validateConfig(options);
-  }catch(err){
-    debug(err);
-    throw(err);
-  }
+let mail = module.exports = function(mail_opts) {
 
-  transport = nodemailer.createTransport(options.mail_opts);
-  config = options;
-  SITE_ROOT_URL = 'http://' +options.host;
+  mail.user = mail_opts.auth.user;
+  mail.transport = nodemailer.createTransport(mail_opts);
 
   return mail;
 };
@@ -39,6 +28,7 @@ let mail = module.exports = function (options){
  * @param {String} email 接受人的邮件地址
  * @param {String} token 验证码字符串
  * @param {String} username 接受人的用户名
+ * @param {String} webname 网站名字
  */
 mail.sendValidateMail = function(options, callback) {
 
@@ -48,27 +38,25 @@ mail.sendValidateMail = function(options, callback) {
     callback(err);
   }
 
-  let from = util.format('%s <%s>', config.name, config.mail_opts.auth.user);
+  let from = util.format('%s <%s>', options.webname, mail.user);
   let to = options.email;
-  let subject = config.name + '验证码';
+  let subject = options.webname + '验证码';
   let html = '<p>您好: ' + options.username + '</p>' +
-    '<p>我们收到您在' + config.name + '的验证码请求, 以下是您的验证码: </p>' +
+    '<p>我们收到您在' + options.webname + '的验证码请求, 以下是您的验证码: </p>' +
     '<p>' + options.token + '</p>' +
-    '<p>若您没有在' + config.name + '请求过, 说明有人滥用了您的电子邮箱, 请删除此邮件, 我们对给您造成的打扰感到抱歉</p>' +
-    '<p>' + config.name + '谨上</p>';
+    '<p>若您没有在' + options.webname + '请求过, 说明有人滥用了您的电子邮箱, 请删除此邮件, 我们对给您造成的打扰感到抱歉</p>' +
+    '<p>' + options.webname + '谨上</p>';
 
-  transport.sendMail({
+  mail.transport.sendMail({
     from: from,
     to: to,
     subject: subject,
     html: html
   }, function(err, data) {
     if (err) {
-      debug('sendValidateMail failed');
       debug(err);
       return callback(err);
     }
-    debug('sendValidateMail successed');
     debug(data);
     callback(null, data);
   });
@@ -80,6 +68,8 @@ mail.sendValidateMail = function(options, callback) {
  * @param {String} email 接受人的邮件地址
  * @param {String} token 重置用的token字符串
  * @param {String} username 接受人的用户名
+ * @param {String} webname 网站名字
+ * @param {String} url 链接地址
  */
 mail.sendActiveMail = function(options, callback) {
 
@@ -89,27 +79,25 @@ mail.sendActiveMail = function(options, callback) {
     callback(err);
   }
 
-  let from = util.format('%s <%s>', config.name, config.mail_opts.auth.user);
+  let from = util.format('%s <%s>', options.webname, mail.user);
   let to = options.email;
-  let subject = config.name + '账号激活';
+  let subject = options.webname + '账号激活';
   let html = '<p>您好: ' + options.username + '</p>' +
-    '<p>我们收到您在' + config.name + '的注册信息, 请点击下面的链接来激活账户: </p>' +
-    '<a href="' + SITE_ROOT_URL + '/active_account?key=' + options.token + '&name=' + options.username + '">激活链接</a>' +
-    '<p>若您没有在' + config.name + '填写过注册信息, 说明有人滥用了您的电子邮箱, 请删除此邮件, 我们对给您造成的打扰感到抱歉</p>' +
-    '<p>' + config.name + '谨上</p>';
+    '<p>我们收到您在' + options.webname + '的注册信息, 请点击下面的链接来激活账户: </p>' +
+    '<a href="' + options.url + '/active_account?key=' + options.token + '&name=' + options.username + '">激活链接</a>' +
+    '<p>若您没有在' + options.webname + '填写过注册信息, 说明有人滥用了您的电子邮箱, 请删除此邮件, 我们对给您造成的打扰感到抱歉</p>' +
+    '<p>' + options.webname + '谨上</p>';
 
-  transport.sendMail({
+  mail.transport.sendMail({
     from: from,
     to: to,
     subject: subject,
     html: html
   }, function(err, data) {
     if (err) {
-      debug('sendActiveMail failed');
       debug(err);
       return callback(err);
     }
-    debug('sendActiveMail successed');
     debug(data);
     callback(null, data);
   });
@@ -121,6 +109,8 @@ mail.sendActiveMail = function(options, callback) {
  * @param {String} email 接收人的邮件地址
  * @param {String} token 重置用的token字符串
  * @param {String} username 接收人的用户名
+ * @param {String} webname 网站名字
+ * @param {String} url 链接地址
  */
 mail.sendResetPassMail = function(options, callback) {
 
@@ -130,53 +120,31 @@ mail.sendResetPassMail = function(options, callback) {
     callback(err);
   }
 
-  let from = util.format('%s <%s>', config.name, config.mail_opts.auth.user);
+  let from = util.format('%s <%s>', options.webname, mail.user);
   let to = options.email;
-  let subject = config.name + '密码重置';
+  let subject = options.webname + '密码重置';
   let html = '<p>您好：' + options.username + '</p>' +
-    '<p>我们收到您在' + config.name + '重置密码的请求，请在24小时内单击下面的链接来重置密码：</p>' +
-    '<a href="' + SITE_ROOT_URL + '/reset_pass?key=' + options.token + '&name=' + options.username + '">重置密码链接</a>' +
-    '<p>若您没有在' + config.name + '填写过注册信息，说明有人滥用了您的电子邮箱，请删除此邮件，我们对给您造成的打扰感到抱歉。</p>' +
-    '<p>' + config.name + ' 谨上。</p>';
+    '<p>我们收到您在' + options.webname + '重置密码的请求，请在24小时内单击下面的链接来重置密码：</p>' +
+    '<a href="' + options.url + '/reset_pass?key=' + options.token + '&name=' + options.username + '">重置密码链接</a>' +
+    '<p>若您没有在' + options.webname + '填写过注册信息，说明有人滥用了您的电子邮箱，请删除此邮件，我们对给您造成的打扰感到抱歉。</p>' +
+    '<p>' + options.webname + ' 谨上。</p>';
 
-  transport.sendMail({
+  mail.transport.sendMail({
     from: from,
     to: to,
     subject: subject,
     html: html
   }, function(err, data) {
     if (err) {
-      debug('sendResetPassMail failed');
       debug(err);
       return callback(err);
     }
-    debug('sendResetPassMail successed');
     debug(data);
     callback(null, data);
   });
 
 };
 
-function _validateConfig(config) {
-  if (!config.host) {
-    let err = new Error('property host is required');
-    debug(err);
-    throw err;
-  }
-
-  if (!config.name) {
-    let err = new Error('property name is required');
-    debug(err);
-    throw err;
-  }
-
-  if (!config.mail_opts) {
-    let err = new Error('property mail_opts is required');
-    debug(err);
-    throw err;
-  }
-
-}
 
 function _validateParams(options) {
   if (!options.email) {
@@ -193,6 +161,12 @@ function _validateParams(options) {
 
   if (!options.username) {
     let err = new Error('property username is required');
+    debug(err);
+    throw err;
+  }
+
+  if (!options.webname) {
+    let err = new Error('property webname is required');
     debug(err);
     throw err;
   }

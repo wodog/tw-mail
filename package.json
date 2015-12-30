@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha -t 30000 test"
+    "test": "DEBUG=tw-mail ./node_modules/mocha/bin/mocha -t 30000 test"
   },
   "author": "",
   "license": "ISC",
