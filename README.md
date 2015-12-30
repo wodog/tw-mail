@@ -10,19 +10,19 @@ npm install tw-mail
 
 ### set up
 
-  first, you should create `config.js` in your current work directory.
+  first, you should create `config.js`.
 
   and then, add some config in it, just like below:
 
 ```js
 module.exports = {
-  name: '小窝狗测试',
-  host: 'localhost',
+  name: '小窝狗测试',  //required
+  host: 'localhost',  //required
 
   /**
    * mail options
    */
-  mail_opts: {
+  mail_opts: {  //required
     host: 'smtp.qq.com',
     port: '587',
     auth: {
@@ -36,7 +36,8 @@ module.exports = {
 ### usage
 
 ```js
-var tw-mail = require('tw-mail');
+var config = require('config');
+var tw-mail = require('tw-mail')(config);
 
 var options = {
   email: '536505032@qq.com',  // the email address where you want to send
@@ -54,11 +55,23 @@ tw_mail.sendValidateMail(options, callback);
 tw_mail.sendActiveMail(options, callback);
 ```
 
+### response
+
+```js
+{
+  accepted: [ '1668665916@qq.com' ],
+  rejected: [],
+  response: '250 Ok: queued as ',
+  envelope: { from: '536505032@qq.com', to: [ '1668665916@qq.com' ] },
+  messageId: '1451383934958-3e89c2f9-74052b8a-495ae996@qq.com'
+}
+```
+
 ### test
 
-```bash
-sudo npm install -g mocha
-mocha -t 5000 ./node_modules/tw-mail/test
+```sh
+npm install
+npm test
 ```
 
 ### screenshots

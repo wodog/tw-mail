@@ -10,10 +10,29 @@
 const nodemailer = require('nodemailer');
 const util = require('util');
 const debug = require('debug')('tw-mail');
-const config = require('../../config');
-const transport = nodemailer.createTransport(config.mail_opts);
-const SITE_ROOT_URL = 'http://' + config.host;
 
+let config;
+let transport;
+let SITE_ROOT_URL;
+
+/**
+ * 构造函数
+ * @param {Object} config 必须的配置对象
+ */
+let mail = module.exports = function (options){
+  try{
+    _validateConfig(options);
+  }catch(err){
+    debug(err);
+    throw(err);
+  }
+
+  transport = nodemailer.createTransport(options.mail_opts);
+  config = options;
+  SITE_ROOT_URL = 'http://' +options.host;
+
+  return mail;
+};
 
 /**
  * 发送验证码邮件
@@ -21,10 +40,9 @@ const SITE_ROOT_URL = 'http://' + config.host;
  * @param {String} token 验证码字符串
  * @param {String} username 接受人的用户名
  */
-exports.sendValidateMail = function(options, callback) {
+mail.sendValidateMail = function(options, callback) {
 
   try {
-    _validateConfig(config);
     _validateParams(options);
   } catch (err) {
     callback(err);
@@ -63,10 +81,9 @@ exports.sendValidateMail = function(options, callback) {
  * @param {String} token 重置用的token字符串
  * @param {String} username 接受人的用户名
  */
-exports.sendActiveMail = function(options, callback) {
+mail.sendActiveMail = function(options, callback) {
 
   try {
-    _validateConfig(config);
     _validateParams(options);
   } catch (err) {
     callback(err);
@@ -105,10 +122,9 @@ exports.sendActiveMail = function(options, callback) {
  * @param {String} token 重置用的token字符串
  * @param {String} username 接收人的用户名
  */
-exports.sendResetPassMail = function(options, callback) {
+mail.sendResetPassMail = function(options, callback) {
 
   try {
-    _validateConfig(config);
     _validateParams(options);
   } catch (err) {
     callback(err);
